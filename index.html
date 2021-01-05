@@ -1,0 +1,20 @@
+<script>
+
+    function myFunction(e) {
+        console.log(e.value);
+        window.location.href = `${window.location.href.split("#")[0]}#${btoa(e.value)}`
+    }
+
+    window.addEventListener('load',()=>{
+        document.querySelector('textarea').value = atob(window.location.href.split("#")[1]);
+    });
+
+</script>
+<style>
+    *{
+        margin:0px;
+        padding:0px;
+        font-size: 2rem;
+    }
+</style>
+<textarea onkeyup="myFunction(this)" style="width:100vw;height:100vh;"></textarea>
