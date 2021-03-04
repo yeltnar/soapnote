@@ -3,6 +3,17 @@
     function myFunction(e) {
         console.log(e.value);
         window.location.href = `${window.location.href.split("#")[0]}#${btoa(e.value)}`
+        (()=>{
+            const invert_length=600;
+            if(document.querySelector('textarea').value.length>invert_length){
+                console.log(document.querySelector('textarea').value.length)
+                document.querySelector('textarea').style.color="white";
+                document.querySelector('textarea').style.backgroundColor="black";
+            }else{
+                document.querySelector('textarea').style.color="black";
+                document.querySelector('textarea').style.backgroundColor="white";
+            }
+        })();
     }
 
     window.addEventListener('load',()=>{
