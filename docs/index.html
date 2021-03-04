@@ -2,7 +2,7 @@
 
     function myFunction(e) {
         console.log(e.value);
-        window.location.href = `${window.location.href.split("#")[0]}#${btoa(e.value)}`
+        window.location.href = `${window.location.href.split("#")[0]}#${btoa(e.value)}`;
         (()=>{
             const invert_length=600;
             if(document.querySelector('textarea').value.length>invert_length){
