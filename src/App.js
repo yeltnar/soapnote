@@ -1,8 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
 import { useEffect } from 'react';
-function encode(s) {return btoa(s);}
-function decode(s) {return atob(s);}
+
+function encode(s) {
+  s = encodeURIComponent(s);
+  return s;
+}
+function decode(s) {
+  s = (decodeURIComponent(s));
+  return s;
+}
 
 window.addEventListener('load', () => {
   const url = window.location.href.split("#")[1]||"";
@@ -20,6 +27,7 @@ function App() {
     console.log(e.value);
     window.location.href = `${window.location.href.split("#")[0]}#${encode(e.value)}`;
     fixColors();
+    console.log(decode(e.value))
   }
 
   return (<textarea onKeyUp={(e)=>{keyUp(e);}} className="maintextarea"></textarea>);
