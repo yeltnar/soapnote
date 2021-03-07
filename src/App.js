@@ -15,16 +15,6 @@ window.addEventListener('load', () => {
 
 function App() {
 
-  const conststyle = {
-    width: "100vw",
-    height: "100vh",
-    margin: "0px",
-    padding: "0px",
-    fontSize: "2rem",
-    color: "white",
-    backgroundColor: "black",
-  }
-
   function keyUp(e) {
     e = e.target
     console.log(e.value);
@@ -32,7 +22,7 @@ function App() {
     fixColors();
   }
 
-  return (<textarea onKeyUp={(e)=>{keyUp(e);}} style={conststyle}></textarea>);
+  return (<textarea onKeyUp={(e)=>{keyUp(e);}} className="maintextarea"></textarea>);
 
 }
 
