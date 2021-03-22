@@ -24,7 +24,7 @@ function App() {
 
   function keyUp(e) {
     e = e.target
-    console.log(e.value);
+    // console.log(e.value);
     window.location.href = `${window.location.href.split("#")[0]}#${encode(e.value)}`;
     fixColors();
     console.log(decode(e.value))
