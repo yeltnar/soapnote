@@ -27,7 +27,7 @@ function App() {
     // console.log(e.value);
     window.location.href = `${window.location.href.split("#")[0]}#${encode(e.value)}`;
     fixColors();
-    console.log(decode(e.value))
+    // console.log(decode(e.value))
   }
 
   return (<textarea onKeyUp={(e)=>{keyUp(e);}} className="maintextarea"></textarea>);
