@@ -22,6 +22,16 @@ const action_table = {
   },
 };
 
+const getUrlValueOnLoad = (()=>{ // cache the url value on load for future calls 
+  let url_value;
+  return function getUrlValueOnLoad(){
+    if(url_value===undefined){
+      url_value = getUrlValue();
+    }
+    return url_value;
+  }
+})();
+
 function getUrlValue(){
   return decode(window.location.href.split("#")[1]||"");
 }
@@ -29,7 +39,7 @@ function getUrlValue(){
 function App() {
 
   const [show_alt_menu,setShowAltMenu] = useState(false);
-  const [main_text,setMainText] = useState(getUrlValue());
+  const [main_text,setMainText] = useState(getUrlValueOnLoad());
 
   const main_text_style = (()=>{
     const invert_length = 600;
@@ -71,8 +81,8 @@ function App() {
   function mainTextChange(e){
     // debugger
     if(show_alt_menu){return;}
-    window.location.href = `${window.location.href.split("#")[0]}#${encode(e.target.value)}`;  
     setMainText(e.target.value);
+    addEncodedText(e.target.value);
   }
 
   return (
@@ -166,3 +176,16 @@ function moveToStartpage(){
 function changePage(url){
   window.location.href = url;
 }
+
+const addEncodedText = (()=>{
+  let timeout_id;
+  return function addEncodedText(raw_text){
+    clearTimeout(timeout_id);
+    timeout_id = setTimeout(()=>{
+      const new_value = `${window.location.href.split("#")[0]}#${encode(raw_text)}`;
+      window.location.href = new_value;  // this takes a while... only do it after stop updating for a sec 
+    },500);
+  }
+})();
+
+
