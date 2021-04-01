@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 
+const warn_style_length = 600;
+
 function encode(s) {
   s = encodeURIComponent(s);
   return s;
@@ -41,15 +43,6 @@ function App() {
   const [show_alt_menu,setShowAltMenu] = useState(false);
   const [main_text,setMainText] = useState(getUrlValueOnLoad());
 
-  const main_text_style = (()=>{
-    const invert_length = 600;
-    const color = main_text.length > invert_length ? "#ffc6c0" : "white";
-    return {
-      backgroundColor:"black",
-      color
-    };
-  })();
-
   // for hot keys
   useEffect(()=>{ 
     let last_key = undefined;
@@ -68,7 +61,7 @@ function App() {
     return ()=>{
       window.removeEventListener('keyup',keyupFunct);
     };
-  })
+  },[show_alt_menu])
 
   const alt_menu = (()=>{
     if(show_alt_menu){
@@ -85,10 +78,13 @@ function App() {
     addEncodedText(e.target.value);
   }
 
+  const main_text_area_class = ["maintextarea"];
+  if(main_text.length>600){main_text_area_class.push("warn");}
+
   return (
     <>
       {alt_menu}
-      <textarea value={main_text} onChange={mainTextChange} style={main_text_style} className="maintextarea"></textarea>
+      <textarea value={main_text} onChange={mainTextChange} className={main_text_area_class.join(" ")}></textarea>
     </>
   );
 }
@@ -135,7 +131,7 @@ function AltMenu(){
     }
     focusMainTextArea()
     return ()=>{window.removeEventListener('keyup',keyup)}
-  });
+  },[]);
 
   const content = (()=>{
     const arr = [];
@@ -164,13 +160,13 @@ function getMainTextAreaEle(){
 }
 
 function moveToGoogle(){
-  // alert('google');
   const text = getMainTextAreaEle().value;
   changePage(`https://google.com/search?q=${text}`);
 }
 
 function moveToStartpage(){
-  alert('sp');  
+  const text = getMainTextAreaEle().value;
+  changePage(`https://www.startpage.com/do/dsearch?query=${text}`);
 }
 
 function changePage(url){
