@@ -3,8 +3,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 const WARN_URL_LENGTH = 2000;
-
-const base_url_length = window.location.origin.length+window.location.pathname.length+1; // +1 for pound sign
+const URL_UPDATE_DELAY = 1000;
 
 function encode(s) {
   s = encodeURIComponent(s);
@@ -45,6 +44,7 @@ function App() {
 
   const [show_alt_menu,setShowAltMenu] = useState(false);
   const [main_text,setMainText] = useState(getUrlValueOnLoad());
+  const [url_is_too_long, setUrlIsTooLong] = useState(false);
 
   // for hot keys
   useEffect(()=>{ 
@@ -80,11 +80,11 @@ window.removeEventListener('keyup',keyupFunct);
     // debugger
     if(show_alt_menu){return;}
     setMainText(e.target.value);
-    addEncodedText(e.target.value);
+    addEncodedText(e.target.value, url_is_too_long, setUrlIsTooLong)
   }
 
   const main_text_area_class = ["maintextarea"];
-  if(main_text.length+base_url_length>WARN_URL_LENGTH){main_text_area_class.push("warn");}
+  if(url_is_too_long){main_text_area_class.push("warn");}
 
   return (
     <>
@@ -185,18 +185,25 @@ window.location.href = url;
 const addEncodedText = (()=>{
   let timeout_id;
 
-  return function addEncodedText(raw_text){
+  return function addEncodedText(raw_text, url_was_too_long, setUrlIsTooLong){
     clearTimeout(timeout_id);
     timeout_id = setTimeout(()=>{
       
       timer.start();
       console.log("window.location get")
       const new_value = `${window.location.href.split("#")[0]}#${encode(raw_text)}`;
+
+      const url_is_too_long = new_value.length>WARN_URL_LENGTH;
+
+      if( url_is_too_long!==url_was_too_long ){ 
+        setUrlIsTooLong(url_is_too_long) 
+      }
       
-      console.log("window.location set")
       window.location.href = new_value;  // this takes a while... only do it after stop updating for a sec 
+      console.log("window.location set");
+
       timer.finish();
-    },500);
+    },URL_UPDATE_DELAY);
   }
 })();
 
