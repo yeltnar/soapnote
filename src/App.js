@@ -189,8 +189,6 @@ const addEncodedText = (()=>{
     clearTimeout(timeout_id);
     timeout_id = setTimeout(()=>{
       
-      timer.start();
-      console.log("window.location get")
       const new_value = `${window.location.href.split("#")[0]}#${encode(raw_text)}`;
 
       const url_is_too_long = new_value.length>WARN_URL_LENGTH;
@@ -202,32 +200,6 @@ const addEncodedText = (()=>{
       window.location.href = new_value;  // this takes a while... only do it after stop updating for a sec 
       console.log("window.location set");
 
-      timer.finish();
     },URL_UPDATE_DELAY);
   }
 })();
-
-const timer = (()=>{
-
-  let start_time;
-
-  function start(){
-    start_time = new Date().getTime();
-  }
-  function finish(){
-    console.log(new Date().getTime() - start_time);
-    start_time = undefined
-  }
-
-  return {start,finish};
-})()
-
-
-window.addEventListener('blur', ()=>{
-  console.log('background');
-  timer.start();
-});
-window.addEventListener('focus', ()=>{
-  console.log('focused');
-  timer.finish();
-});
