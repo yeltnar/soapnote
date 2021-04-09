@@ -2,7 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 
-const warn_style_length = 600;
+const WARN_URL_LENGTH = 2000;
+
+const base_url_length = window.location.origin.length+window.location.pathname.length+1; // +1 for pound sign
 
 function encode(s) {
   s = encodeURIComponent(s);
@@ -35,6 +37,7 @@ const getUrlValueOnLoad = (()=>{ // cache the url value on load for future calls
 })();
 
 function getUrlValue(){
+  console.log("window.location get");
   return decode(window.location.href.split("#")[1]||"");
 }
 
@@ -46,7 +49,8 @@ function App() {
   // for hot keys
   useEffect(()=>{ 
     let last_key = undefined;
-    window.addEventListener('keyup',keyupFunct);
+    console.log("window.addEventListener")
+window.addEventListener('keyup',keyupFunct);
     function keyupFunct(e){
       if( e.key==="Control" && last_key==="Control" ){
         console.log(`should open extra menu ${!show_alt_menu}`);
@@ -59,7 +63,8 @@ function App() {
       },500);
     }
     return ()=>{
-      window.removeEventListener('keyup',keyupFunct);
+      console.log("window.removeEventListener")
+window.removeEventListener('keyup',keyupFunct);
     };
   },[show_alt_menu])
 
@@ -79,7 +84,7 @@ function App() {
   }
 
   const main_text_area_class = ["maintextarea"];
-  if(main_text.length>600){main_text_area_class.push("warn");}
+  if(main_text.length+base_url_length>WARN_URL_LENGTH){main_text_area_class.push("warn");}
 
   return (
     <>
@@ -118,7 +123,8 @@ function AltMenu(){
   };
 
   useEffect(()=>{
-    window.addEventListener('keyup',keyup);
+    console.log("window.addEventListener")
+window.addEventListener('keyup',keyup);
     function keyup(e){
       // debugger
       console.log(e.key);
@@ -130,7 +136,8 @@ function AltMenu(){
       e.stopPropagation();
     }
     focusMainTextArea()
-    return ()=>{window.removeEventListener('keyup',keyup)}
+    return ()=>{console.log("window.removeEventListener")
+window.removeEventListener('keyup',keyup)}
   },[]);
 
   const content = (()=>{
@@ -152,7 +159,8 @@ function AltMenu(){
 }
 
 function focusMainTextArea(){
-  window.focus(getMainTextAreaEle());
+  console.log("window.focus")
+window.focus(getMainTextAreaEle());
 }
 
 function getMainTextAreaEle(){
@@ -170,18 +178,49 @@ function moveToStartpage(){
 }
 
 function changePage(url){
-  window.location.href = url;
+  console.log("window.location")
+window.location.href = url;
 }
 
 const addEncodedText = (()=>{
   let timeout_id;
+
   return function addEncodedText(raw_text){
     clearTimeout(timeout_id);
     timeout_id = setTimeout(()=>{
+      
+      timer.start();
+      console.log("window.location get")
       const new_value = `${window.location.href.split("#")[0]}#${encode(raw_text)}`;
+      
+      console.log("window.location set")
       window.location.href = new_value;  // this takes a while... only do it after stop updating for a sec 
+      timer.finish();
     },500);
   }
 })();
 
+const timer = (()=>{
 
+  let start_time;
+
+  function start(){
+    start_time = new Date().getTime();
+  }
+  function finish(){
+    console.log(new Date().getTime() - start_time);
+    start_time = undefined
+  }
+
+  return {start,finish};
+})()
+
+
+window.addEventListener('blur', ()=>{
+  console.log('background');
+  timer.start();
+});
+window.addEventListener('focus', ()=>{
+  console.log('focused');
+  timer.finish();
+});
