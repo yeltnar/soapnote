@@ -30,6 +30,7 @@ const getUrlValueOnLoad = (()=>{ // cache the url value on load for future calls
   return function getUrlValueOnLoad(){
     if(url_value===undefined){
       url_value = getUrlValue();
+      setTitle(url_value);
     }
     return url_value;
   }
@@ -50,7 +51,7 @@ function App() {
   useEffect(()=>{ 
     let last_key = undefined;
     console.log("window.addEventListener")
-window.addEventListener('keyup',keyupFunct);
+    window.addEventListener('keyup',keyupFunct);
     function keyupFunct(e){
       if( e.key==="Control" && last_key==="Control" ){
         console.log(`should open extra menu ${!show_alt_menu}`);
