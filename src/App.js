@@ -178,8 +178,13 @@ function moveToStartpage(){
 }
 
 function changePage(url){
-  console.log("window.location")
-window.location.href = url;
+  console.log("set window.location")
+  window.location.href = url;
+}
+
+function setTitle(title){
+  console.log("set title")
+  document.title = title;
 }
 
 const addEncodedText = (()=>{
@@ -197,7 +202,8 @@ const addEncodedText = (()=>{
         setUrlIsTooLong(url_is_too_long) 
       }
       
-      window.location.href = new_value;  // this takes a while... only do it after stop updating for a sec 
+      changePage(new_value); // this takes a while... only do it after stop updating for a sec 
+      setTitle(raw_text)
       console.log("window.location set");
 
     },URL_UPDATE_DELAY);
