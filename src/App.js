@@ -184,6 +184,11 @@ function changePage(url){
 }
 
 function setTitle(title){
+
+  if(title===null||title===undefined||title===""){
+    return "SoapNote";
+  }
+
   // take up to first new line as title and remove whitespace at front and end
   const new_title = /([^\s].*[^\s])\n?/.exec(title)[1];
   if(document.title!==new_title){
