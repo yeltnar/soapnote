@@ -44,10 +44,9 @@ jobs:
 
 
       - run: |
-          cd src && 
           npm install && 
           npm run build --if-present && 
-          mv build ../docs &&
+          mv build docs &&
           cd ..
       - run: pwd;ls;command -v git
       # - name: Deploy
