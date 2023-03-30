@@ -44,7 +44,7 @@ jobs:
 
 
       - run: |
-          cd github_actions_playin && 
+          cd src && 
           npm install && 
           npm run build --if-present && 
           mv build ../docs &&
@@ -61,11 +61,11 @@ jobs:
           pwd; ls; 
           git config --global user.email "github-actions@andbrant.com" && 
           git config --global user.name "Drew Bot" &&
-          rm -rf github_actions_playin &&
+          rm -rf src &&
           git add . &&
           find . | awk '!/node_modules/{print $0}' | awk '!/\.git/{print}' &&
           git commit -m 'auto build' &&
           git remote remove origin && 
-          git remote add origin https://yeltnar:${{ secrets.GITHUB_TOKEN }}@github.com/yeltnar/github_actions_playin.git &&
+          git remote add origin https://yeltnar:${{ secrets.GITHUB_TOKEN }}@github.com/yeltnar/soapnote.git &&
           git checkout -b gh-pages && 
           git push -fu origin gh-pages
