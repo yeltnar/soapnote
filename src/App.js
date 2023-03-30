@@ -1,9 +1,9 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 
 const WARN_URL_LENGTH = 2000;
-const URL_UPDATE_DELAY = 1000;
+const URL_UPDATE_DELAY = 3000;
 
 function encode(s) {
   s = encodeURIComponent(s);
