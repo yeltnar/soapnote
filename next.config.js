@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  distDir: 'docs',
+  distDir: 'build',
+  basePath: '/soapnote',
 }
 
 module.exports = nextConfig
