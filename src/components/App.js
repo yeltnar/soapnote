@@ -22,6 +22,10 @@ const action_table = {
     f:moveToStartpage,
     name:"moveToStartpage"
   },
+  o:{
+    f:openLink,
+    name:"openLink"
+  },
 };
 
 const getUrlValueOnLoad = (()=>{ // cache the url value on load for future calls 
@@ -175,6 +179,11 @@ function moveToGoogle(){
 function moveToStartpage(){
   const text = getMainTextAreaEle().value;
   changePage(`https://www.startpage.com/do/dsearch?query=${text}`);
+}
+
+function openLink(){
+  const text = getMainTextAreaEle().value;
+  changePage(`${text}`); 
 }
 
 function changePage(url){
